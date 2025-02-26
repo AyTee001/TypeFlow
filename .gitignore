@@ -1,0 +1,39 @@
+# ASP.NET Core
+bin/
+obj/
+*.db
+*.bak
+*.log
+*.pdb
+*.publish.xml
+*.user
+*.vspscc
+.vscode/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Angular
+node_modules/
+dist/
+tmp/
+temp/
+*.log
+*.tsbuildinfo
+
+# Environment variables
+.env
+
+# Dependency directories
+packages/
+bower_components/
+
+# Logs
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

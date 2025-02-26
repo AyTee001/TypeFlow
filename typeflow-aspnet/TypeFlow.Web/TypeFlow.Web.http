@@ -1,0 +1,6 @@
+@TypeFlow.Web_HostAddress = http://localhost:5098
+
+GET {{TypeFlow.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
