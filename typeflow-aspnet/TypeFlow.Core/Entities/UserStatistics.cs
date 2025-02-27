@@ -2,7 +2,7 @@
 
 namespace TypeFlow.Core.Entities
 {
-    class UserStatistics : Entity
+    public class UserStatistics : Entity
     {
         public Guid UserId { get; set; }
         public float Accuracy { get; set; }

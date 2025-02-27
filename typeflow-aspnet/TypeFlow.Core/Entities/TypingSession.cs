@@ -2,9 +2,10 @@
 
 namespace TypeFlow.Core.Entities
 {
-    class TypingSession : Entity
+    public class TypingSession : Entity
     {
         public Guid UserId { get; set; }
+        public Guid? ChallengeId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int WordsTyped { get; set; }

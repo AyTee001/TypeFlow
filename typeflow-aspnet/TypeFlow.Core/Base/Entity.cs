@@ -1,6 +1,6 @@
 ﻿namespace TypeFlow.Core.Base
 {
-    class Entity
+    public class Entity
     {
         public Guid Id { get; set; }
     }

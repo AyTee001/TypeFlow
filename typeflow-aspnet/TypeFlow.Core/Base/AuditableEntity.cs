@@ -1,6 +1,6 @@
 ﻿namespace TypeFlow.Core.Base
 {
-    class AuditableEntity : Entity
+    public class AuditableEntity : Entity
     {
         public DateTime CreatedAt { get; set; }
         public long CreatorId { get; set; }

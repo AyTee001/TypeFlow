@@ -1,4 +1,10 @@
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
+using TypeFlow.Core.Entities;
+using TypeFlow.Infrastructure.Context;
+
 namespace TypeFlow.Web
 {
     public class Program
@@ -12,6 +18,19 @@ namespace TypeFlow.Web
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            // Configure DBContext
+            builder.Services.AddDbContext<TypeFlowDbContext>(opt
+                => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddDataProtection();
+            // Add IdentityCore
+            builder.Services
+                .AddIdentityCore<User>()
+                .AddRoles<IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<TypeFlowDbContext>()
+                .AddApiEndpoints()
+                .AddDefaultTokenProviders();
 
             var app = builder.Build();
 
@@ -27,6 +46,11 @@ namespace TypeFlow.Web
 
 
             app.MapControllers();
+
+            app.MapGet("hello/", () =>
+            {
+                return "Hello, World!";
+            });
 
             app.Run();
         }
