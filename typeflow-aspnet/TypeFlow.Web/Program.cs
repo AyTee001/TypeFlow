@@ -1,9 +1,4 @@
-
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using TypeFlow.Core.Entities;
-using TypeFlow.Infrastructure.Context;
+using TypeFlow.Web.Configs;
 
 namespace TypeFlow.Web
 {
@@ -13,24 +8,14 @@ namespace TypeFlow.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
-            // Configure DBContext
-            builder.Services.AddDbContext<TypeFlowDbContext>(opt
-                => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddDataProtection();
-            // Add IdentityCore
-            builder.Services
-                .AddIdentityCore<User>()
-                .AddRoles<IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<TypeFlowDbContext>()
-                .AddApiEndpoints()
-                .AddDefaultTokenProviders();
+            StorageConfigurations.ConfigureStorageWithIdentity(builder);
+            AuthConfigurations.AddAuth(builder);
+
 
             var app = builder.Build();
 
@@ -40,8 +25,8 @@ namespace TypeFlow.Web
                 app.MapOpenApi();
             }
 
-            app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
