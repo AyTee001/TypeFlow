@@ -10,6 +10,7 @@ namespace TypeFlow.Infrastructure.Context
         public DbSet<TypingChallenge> TypingChallenges { get; set; }
         public DbSet<TypingSession> TypingSessions { get; set; }
         public DbSet<UserStatistics> UserStatistics { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

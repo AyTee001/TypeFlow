@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TypeFlow.Web.Options;
 
 namespace TypeFlow.Web.Configs
 {
-    public static class AuthConfigurations
+    public static class AuthExtensions
     {
         public static void AddAuth(WebApplicationBuilder builder)
         {
@@ -17,11 +19,13 @@ namespace TypeFlow.Web.Configs
             })
             .AddJwtBearer(x =>
             {
+                var authSettings = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<AuthSettings>>().Value;
+
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SigningKey"]!)),
+                    ValidIssuer = authSettings.Jwt.Issuer,
+                    ValidAudience = authSettings.Jwt.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Jwt.SigningKey)),
                     ValidateIssuer = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TypeFlow.Application\TypeFlow.Application.csproj" />
     <ProjectReference Include="..\TypeFlow.Core\TypeFlow.Core.csproj" />
     <ProjectReference Include="..\TypeFlow.Infrastructure\TypeFlow.Infrastructure.csproj" />
   </ItemGroup>

@@ -5,7 +5,7 @@ using TypeFlow.Infrastructure.Context;
 
 namespace TypeFlow.Web.Configs
 {
-    public static class StorageConfigurations
+    public static class StorageExtensions
     {
         public static void ConfigureStorageWithIdentity(WebApplicationBuilder builder)
         {

@@ -1,46 +1,26 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using TypeFlow.Core.Entities;
+using TypeFlow.Application.Security;
+using TypeFlow.Web.Dto;
+using Microsoft.Extensions.Options;
+using TypeFlow.Web.Options;
 
 namespace TypeFlow.Web
 {
-    public class JwtSettings
-    {
-        public string Audience { get; set; } = string.Empty;
-        public string Issuer { get; set; } = string.Empty;
-        public string SigningKey { get; set; } = string.Empty;
-    }
-
-    public class UserRegisterDto
-    {
-        public string UserName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
-    public class UserSignInDto
-    {
-        public string UserName { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
-
-
     [ApiController]
     public class AuthController(UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        IConfiguration configuration) : ControllerBase
+        ITokenManager tokenManager,
+        IOptions<AuthSettings> authSettings) : ControllerBase
     {
         private readonly UserManager<User> _userManager = userManager;
-        private readonly SignInManager<User> _signInManager = signInManager;
-        private readonly IConfiguration _configuration = configuration;
+        private readonly ITokenManager _tokenManager = tokenManager;
+        private readonly IOptions<AuthSettings> _authSettings = authSettings;
 
         [AllowAnonymous]
         [HttpPost("/register")]
-        public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterData)
+        public async Task<IActionResult> Register([FromBody] UserRegistrationData userRegisterData)
         {
             if (userRegisterData is null) return BadRequest();
 
@@ -56,14 +36,15 @@ namespace TypeFlow.Web
                 return BadRequest();
             }
 
-            var token = GenerateJwtToken(user);
+            var tokenPair = await _tokenManager.IssueNewTokenPair(user);
+            SetRefreshTokenCookie(tokenPair.RefreshToken);
 
-            return Ok(new { Token = token });
+            return Ok(tokenPair.AccessToken);
         }
 
         [AllowAnonymous]
         [HttpPost("/login")]
-        public async Task<IActionResult> SignIn([FromBody] UserSignInDto userSignInData)
+        public async Task<IActionResult> SignIn([FromBody] UserSignInData userSignInData)
         {
             if (userSignInData is null) return BadRequest();
 
@@ -72,49 +53,48 @@ namespace TypeFlow.Web
             if (user == null || !(await _userManager.CheckPasswordAsync(user, userSignInData.Password)))
                 return Unauthorized();
 
-            var token = GenerateJwtToken(user);
+            var tokenPair = await _tokenManager.IssueNewTokenPair(user);
+            SetRefreshTokenCookie(tokenPair.RefreshToken);
 
-            return Ok(new { token });
+            return Ok(tokenPair.AccessToken);
         }
 
+        [HttpPost("/refresh")]
+        public async Task<IActionResult> Refresh()
+        {
+            var refreshToken = Request.Cookies[_authSettings.Value.RefreshToken.CookieName];
+            if (refreshToken is null) return Unauthorized();
+
+            var pair = await _tokenManager.RefreshToken(refreshToken);
+            SetRefreshTokenCookie(pair.RefreshToken);
+
+            return Ok(pair.AccessToken);
+        }
 
         [HttpPost("/logout")]
         public async Task<IActionResult> LogOut()
         {
-            await _signInManager.SignOutAsync();
+            var refreshToken = Request.Cookies[_authSettings.Value.RefreshToken.CookieName];
+            if (refreshToken is null) return Unauthorized();
+
+            await _tokenManager.RevokeToken(refreshToken);
+
             return Ok();
         }
 
-        private string GenerateJwtToken(User user)
+        private void SetRefreshTokenCookie(RefreshToken token)
         {
-            var jwtSettings = _configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>()
-                ?? throw new InvalidOperationException();
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SigningKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new List<Claim>
+            var cookieOptions = new CookieOptions
             {
-                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new(JwtRegisteredClaimNames.Iss, jwtSettings.Issuer),
+                Expires = token.ExpiresAt,
+                MaxAge = new TimeSpan(_authSettings.Value.RefreshToken.ExpiryDays, 0, 0, 0),
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.Lax
             };
 
+            this.Response.Cookies.Append(_authSettings.Value.RefreshToken.CookieName, token.Token, cookieOptions);
 
-            var token = new JwtSecurityToken(
-                issuer: jwtSettings.Issuer,
-                audience: jwtSettings.Audience,
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        [Route("/sth")]
-        [Authorize]
-        public IActionResult GetSth()
-        {
-            return Ok("Your token works!!!!!!");
         }
     }
 }
