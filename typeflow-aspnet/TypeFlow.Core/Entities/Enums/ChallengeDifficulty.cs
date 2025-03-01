@@ -1,4 +1,4 @@
-﻿namespace TypeFlow.Core.Enums
+﻿namespace TypeFlow.Core.Entities.Enums
 {
     public enum ChallengeDifficulty
     {

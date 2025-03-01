@@ -7,7 +7,7 @@ using TypeFlow.Web.Dto;
 using Microsoft.Extensions.Options;
 using TypeFlow.Web.Options;
 
-namespace TypeFlow.Web
+namespace TypeFlow.Web.Controllers
 {
     [ApiController]
     public class AuthController(UserManager<User> userManager,
@@ -50,7 +50,7 @@ namespace TypeFlow.Web
 
             var user = await _userManager.FindByNameAsync(userSignInData.UserName);
 
-            if (user == null || !(await _userManager.CheckPasswordAsync(user, userSignInData.Password)))
+            if (user == null || !await _userManager.CheckPasswordAsync(user, userSignInData.Password))
                 return Unauthorized();
 
             var tokenPair = await _tokenManager.IssueNewTokenPair(user);
@@ -93,7 +93,7 @@ namespace TypeFlow.Web
                 SameSite = SameSiteMode.Lax
             };
 
-            this.Response.Cookies.Append(_authSettings.Value.RefreshToken.CookieName, token.Token, cookieOptions);
+            Response.Cookies.Append(_authSettings.Value.RefreshToken.CookieName, token.Token, cookieOptions);
 
         }
     }

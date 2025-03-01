@@ -1,6 +1,6 @@
 ﻿namespace TypeFlow.Web.Options
 {
-    public class JwtSettings
+    internal class JwtSettings
     {
         public string Audience { get; set; } = string.Empty;
 

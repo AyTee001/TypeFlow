@@ -12,7 +12,7 @@ using TypeFlow.Web.Options;
 
 namespace TypeFlow.Application.Security
 {
-    public class TokenManager(IOptions<AuthSettings> authSettings,
+    internal class TokenManager(IOptions<AuthSettings> authSettings,
         TypeFlowDbContext context,
         IHttpContextAccessor httpContextAccessor) : ITokenManager
     {

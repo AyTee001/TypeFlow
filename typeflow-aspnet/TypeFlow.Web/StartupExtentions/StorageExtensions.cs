@@ -7,7 +7,7 @@ namespace TypeFlow.Web.Configs
 {
     public static class StorageExtensions
     {
-        public static void ConfigureStorageWithIdentity(WebApplicationBuilder builder)
+        public static void ConfigureStorageWithIdentity(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<TypeFlowDbContext>(opt
                 => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

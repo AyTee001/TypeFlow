@@ -8,7 +8,7 @@ namespace TypeFlow.Web.Configs
 {
     public static class AuthExtensions
     {
-        public static void AddAuth(WebApplicationBuilder builder)
+        public static void AddAuth(this WebApplicationBuilder builder)
         {
 
             builder.Services.AddAuthentication(options =>

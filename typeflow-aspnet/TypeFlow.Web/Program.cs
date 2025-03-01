@@ -1,6 +1,7 @@
 using TypeFlow.Application.Security;
 using TypeFlow.Web.Configs;
 using TypeFlow.Web.Options;
+using TypeFlow.Web.StartupExtentions;
 
 namespace TypeFlow.Web
 {
@@ -13,13 +14,11 @@ namespace TypeFlow.Web
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
 
-            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-            builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection(AuthSettings.Name));
-
+            builder.AddOptionsAndConfiguration();
             builder.Services.AddTransient<ITokenManager, TokenManager>();
 
-            StorageExtensions.ConfigureStorageWithIdentity(builder);
-            AuthExtensions.AddAuth(builder);
+            builder.ConfigureStorageWithIdentity();
+            builder.AddAuth();
 
 
             var app = builder.Build();

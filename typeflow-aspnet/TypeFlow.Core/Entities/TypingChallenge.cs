@@ -1,5 +1,5 @@
 ﻿using TypeFlow.Core.Base;
-using TypeFlow.Core.Enums;
+using TypeFlow.Core.Entities.Enums;
 
 namespace TypeFlow.Core.Entities
 {
