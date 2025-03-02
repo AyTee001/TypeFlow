@@ -1,23 +1,33 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
-    <mat-form-field appearance="fill">
-        <mat-label>Username</mat-label>
+<div class="user-form-container">
+    <img src="/Pngtre_type_2297592_hands.png" alt="Hands" aria-hidden="true" class="hands-image">
+    <div class="user-form-box">
+        <div class="user-form-description">
+            <h1>TypeFlow</h1>
+            <p>Welcome back! Please login to your account.</p>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="login()" class="user-form">
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
 
-        <input matInput placeholder="ann123"
-            formControlName="userName"
-            [required]="loginForm.get('userName')?.hasError('required') ?? false">
+                <input matInput formControlName="userName"
+                    [required]="loginForm.get('userName')?.hasError('required') ?? false">
 
-        <mat-icon matSuffix>person</mat-icon>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>Password</mat-label>
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
 
-        <input matInput type="password"
-            formControlName="password"
-            [required]="loginForm.get('password')?.hasError('required') ?? false">
+                <input matInput type="password" formControlName="password"
+                    [required]="loginForm.get('password')?.hasError('required') ?? false">
 
-        <mat-icon matSuffix>lock</mat-icon>
-    </mat-form-field>
-    <div class="login-form-buttons">
-        <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+                <mat-icon matSuffix>lock</mat-icon>
+            </mat-form-field>
+            <div class="user-form-buttons">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+            </div>
+        </form>
     </div>
-</form>
+    <div class="user-form-link">
+        <p>Don't have an account? <a routerLink="/registration">Register</a></p>
+    </div>
+</div>

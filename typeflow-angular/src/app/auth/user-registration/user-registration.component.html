@@ -1,0 +1,49 @@
+<div class="user-form-container">
+    <img src="/Pngtre_type_2297592_hands.png" alt="Hands" aria-hidden="true" class="hands-image">
+    <div class="user-form-box">
+        <div class="user-form-description">
+            <h1>TypeFlow</h1>
+            <p>Join TypeFlow and master the art of touch typing. Let's get started!</p>
+        </div>
+        <form [formGroup]="registrationForm" (ngSubmit)="login()" class="user-form">
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+
+                <input matInput formControlName="userName"
+                    [required]="registrationForm.get('userName')?.hasError('required') ?? false">
+
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+
+                <input matInput type="email" formControlName="email"
+                    [required]="registrationForm.get('email')?.hasError('required') ?? false">
+
+                <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+
+                <input matInput type="password" formControlName="password"
+                    [required]="registrationForm.get('password')?.hasError('required') ?? false">
+
+                <mat-icon matSuffix>lock</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Repeat password</mat-label>
+
+                <input matInput type="password" formControlName="repeatedPassword"
+                    [required]="registrationForm.get('repeatedPassword')?.hasError('required') ?? false">
+
+                <mat-icon matSuffix>lock</mat-icon>
+            </mat-form-field>
+            <div class="user-form-buttons">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!registrationForm.valid">Register</button>
+            </div>
+        </form>
+    </div>
+    <div class="user-form-link">
+        <p>Already have an account? <a routerLink="/login">Login</a></p>
+    </div>
+</div>

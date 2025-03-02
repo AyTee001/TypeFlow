@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { UserSessionService } from '../user-session/user-session.service';
-import { UserLogin } from '../../models/auth-models';
+import { UserLogin, UserRegistration } from '../../models/auth-models';
 
 @Injectable({
 	providedIn: 'root'
@@ -38,7 +38,16 @@ export class UserService {
 	}
 
 	//should return user data in the future
-	public register() {
+	public register(registrationData: UserRegistration) {
+		this.authService.register(registrationData)
+		.subscribe({
+			next: (tokens) => {
+				this.sessionService.setSession(tokens);
+			},
+			error: (error) => {
+				console.error(error);
+			}
+		});
 	}
 
 	public isAuthenticated() {

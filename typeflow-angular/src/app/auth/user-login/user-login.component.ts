@@ -7,12 +7,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../services/user/user.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'tf-user-login',
-	imports: [FormsModule, ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		MatIconModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatButtonModule,
+		RouterLink
+	],
 	templateUrl: './user-login.component.html',
-	styleUrl: './user-login.component.scss'
+	styleUrls: ['./user-login.component.scss', '../shared-styles/user-auth-forms.scss']
 })
 export class UserLoginComponent {
 	public loginForm!: FormGroup;
