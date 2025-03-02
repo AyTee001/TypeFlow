@@ -3,7 +3,7 @@ using TypeFlow.Core.Entities;
 
 namespace TypeFlow.Application.Security
 {
-    internal interface ITokenManager
+    public interface ITokenManager
     {
         public Task<TokenPair> IssueNewTokenPair(User user);
         public Task RevokeTokens(Guid userId);

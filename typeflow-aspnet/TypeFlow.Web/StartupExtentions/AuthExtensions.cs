@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TypeFlow.Web.Options;
@@ -19,7 +18,8 @@ namespace TypeFlow.Web.Configs
             })
             .AddJwtBearer(x =>
             {
-                var authSettings = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<AuthSettings>>().Value;
+                var authSettings = builder.Configuration.GetSection(AuthSettings.Name).Get<AuthSettings>();
+                if (authSettings is null) return;
 
                 x.TokenValidationParameters = new TokenValidationParameters
                 {

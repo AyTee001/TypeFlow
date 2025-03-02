@@ -1,6 +1,6 @@
 ﻿namespace TypeFlow.Web.Options
 {
-    internal class RefreshTokenSettings
+    public class RefreshTokenSettings
     {
         public int ExpiryDays { get; set; }
 

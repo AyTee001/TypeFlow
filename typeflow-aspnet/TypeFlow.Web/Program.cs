@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using TypeFlow.Application.Security;
 using TypeFlow.Web.Configs;
 using TypeFlow.Web.Options;
@@ -11,10 +12,11 @@ namespace TypeFlow.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.AddOptionsAndConfiguration();
+            builder.AddCors();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
 
-            builder.AddOptionsAndConfiguration();
             builder.Services.AddTransient<ITokenManager, TokenManager>();
 
             builder.ConfigureStorageWithIdentity();
@@ -29,6 +31,8 @@ namespace TypeFlow.Web
                 app.MapOpenApi();
             }
 
+            var corsSettings = app.Services.GetRequiredService<IOptions<CorsSettings>>();
+            app.UseCors(corsSettings?.Value?.PolicyName ?? string.Empty);
 
             app.UseAuthentication();
             app.UseAuthorization();

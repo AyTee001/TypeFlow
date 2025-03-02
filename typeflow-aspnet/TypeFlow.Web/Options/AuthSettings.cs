@@ -1,6 +1,6 @@
 ﻿namespace TypeFlow.Web.Options
 {
-    internal class AuthSettings
+    public class AuthSettings
     {
         public const string Name = "Auth";
         public JwtSettings Jwt { get; set; } = new();

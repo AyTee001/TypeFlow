@@ -1,0 +1,23 @@
+<form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+    <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+
+        <input matInput placeholder="ann123"
+            formControlName="userName"
+            [required]="loginForm.get('userName')?.hasError('required') ?? false">
+
+        <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+
+        <input matInput type="password"
+            formControlName="password"
+            [required]="loginForm.get('password')?.hasError('required') ?? false">
+
+        <mat-icon matSuffix>lock</mat-icon>
+    </mat-form-field>
+    <div class="login-form-buttons">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+    </div>
+</form>

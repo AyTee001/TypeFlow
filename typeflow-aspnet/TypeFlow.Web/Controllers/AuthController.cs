@@ -10,6 +10,7 @@ using TypeFlow.Web.Options;
 namespace TypeFlow.Web.Controllers
 {
     [ApiController]
+    [Route("auth")]
     public class AuthController(UserManager<User> userManager,
         ITokenManager tokenManager,
         IOptions<AuthSettings> authSettings) : ControllerBase
@@ -19,7 +20,7 @@ namespace TypeFlow.Web.Controllers
         private readonly IOptions<AuthSettings> _authSettings = authSettings;
 
         [AllowAnonymous]
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegistrationData userRegisterData)
         {
             if (userRegisterData is null) return BadRequest();
@@ -37,14 +38,21 @@ namespace TypeFlow.Web.Controllers
             }
 
             var tokenPair = await _tokenManager.IssueNewTokenPair(user);
-            SetRefreshTokenCookie(tokenPair.RefreshToken);
 
-            return Ok(tokenPair.AccessToken);
+            var response = new TokensResponse
+            {
+                AccessToken = tokenPair.AccessToken.Token,
+                RefreshToken = tokenPair.RefreshToken.Token,
+                AccessTokenExpiration = tokenPair.AccessToken.ExpiresAt,
+                RefreshTokenExpiration = tokenPair.RefreshToken.ExpiresAt
+            };
+
+            return Ok(response);
         }
 
         [AllowAnonymous]
-        [HttpPost("/login")]
-        public async Task<IActionResult> SignIn([FromBody] UserSignInData userSignInData)
+        [HttpPost("login")]
+        public async Task<IActionResult> LogIn([FromBody] UserSignInData userSignInData)
         {
             if (userSignInData is null) return BadRequest();
 
@@ -54,24 +62,38 @@ namespace TypeFlow.Web.Controllers
                 return Unauthorized();
 
             var tokenPair = await _tokenManager.IssueNewTokenPair(user);
-            SetRefreshTokenCookie(tokenPair.RefreshToken);
 
-            return Ok(tokenPair.AccessToken);
+            var response = new TokensResponse
+            {
+                AccessToken = tokenPair.AccessToken.Token,
+                RefreshToken = tokenPair.RefreshToken.Token,
+                AccessTokenExpiration = tokenPair.AccessToken.ExpiresAt,
+                RefreshTokenExpiration = tokenPair.RefreshToken.ExpiresAt
+            };
+
+            return Ok(response);
         }
 
-        [HttpPost("/refresh")]
+        [HttpPost("refresh")]
         public async Task<IActionResult> Refresh()
         {
             var refreshToken = Request.Cookies[_authSettings.Value.RefreshToken.CookieName];
             if (refreshToken is null) return Unauthorized();
 
-            var pair = await _tokenManager.RefreshToken(refreshToken);
-            SetRefreshTokenCookie(pair.RefreshToken);
+            var tokenPair = await _tokenManager.RefreshToken(refreshToken);
 
-            return Ok(pair.AccessToken);
+            var response = new TokensResponse
+            {
+                AccessToken = tokenPair.AccessToken.Token,
+                RefreshToken = tokenPair.RefreshToken.Token,
+                AccessTokenExpiration = tokenPair.AccessToken.ExpiresAt,
+                RefreshTokenExpiration = tokenPair.RefreshToken.ExpiresAt
+            };
+
+            return Ok(response);
         }
 
-        [HttpPost("/logout")]
+        [HttpPost("logout")]
         public async Task<IActionResult> LogOut()
         {
             var refreshToken = Request.Cookies[_authSettings.Value.RefreshToken.CookieName];
@@ -80,21 +102,6 @@ namespace TypeFlow.Web.Controllers
             await _tokenManager.RevokeToken(refreshToken);
 
             return Ok();
-        }
-
-        private void SetRefreshTokenCookie(RefreshToken token)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                Expires = token.ExpiresAt,
-                MaxAge = new TimeSpan(_authSettings.Value.RefreshToken.ExpiryDays, 0, 0, 0),
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.Lax
-            };
-
-            Response.Cookies.Append(_authSettings.Value.RefreshToken.CookieName, token.Token, cookieOptions);
-
         }
     }
 }
