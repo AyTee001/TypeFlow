@@ -29,6 +29,21 @@
                     [required]="registrationForm.get('password')?.hasError('required') ?? false">
 
                 <mat-icon matSuffix>lock</mat-icon>
+                @if (hasError('password', 'minlength')) {
+                    <mat-error>Password must be at least 12 characters long.</mat-error>
+                }
+                @else if (hasError('password', 'requiredDigit')) {
+                    <mat-error>Password must contain at least one digit.</mat-error>
+                }
+                @else if (hasError('password', 'requiredLowercase')) {
+                    <mat-error>Password must contain at least one lowercase letter.</mat-error>
+                }
+                @else if (hasError('password', 'requiredUppercase')) {
+                    <mat-error>Password must contain at least one uppercase letter.</mat-error>
+                }
+                @else if (hasError('password', 'requiredNonAlphanumeric')) {
+                    <mat-error>Password must contain at least one special character.</mat-error>
+                }
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Repeat password</mat-label>
@@ -39,7 +54,8 @@
                 <mat-icon matSuffix>lock</mat-icon>
             </mat-form-field>
             <div class="user-form-buttons">
-                <button mat-raised-button color="primary" type="submit" [disabled]="!registrationForm.valid">Register</button>
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="!registrationForm.valid">Register</button>
             </div>
         </form>
     </div>

@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { UserSessionService } from '../services/user-session/user-session.service';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 	const sessionService = inject(UserSessionService);
@@ -27,8 +28,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 
 	function handleTokenExpiration(request: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> {
+		const router = inject(Router);
+
 		const refreshToken = sessionService.getRefreshToken();
 		if (!refreshToken) {
+			router.navigate(['/login']);
 			return throwError(() => new Error('No refresh token available'));
 		}
 
@@ -40,6 +44,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 			}),
 			catchError((error) => {
 				console.error('Error handling expired access token:', error);
+				router.navigate(['/login']);
 				return throwError(() => error);
 			})
 		);

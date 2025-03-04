@@ -6,13 +6,23 @@ import { UserData } from './auth/models/user.models';
 @Component({
 	selector: 'app-root',
 	imports: [
-		RouterOutlet
+		RouterOutlet,
 	],
 	providers: [],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss'
 })
 export class AppComponent {
-	constructor(public userService: UserService){ 
+	public user: UserData | null = null;
+
+	constructor(public userService: UserService) {
+		userService.getUser().subscribe({
+			next: (userData) => {
+				this.user = userData;
+			},
+			error: (error) => {
+				console.error('Failed to get user data:', error);
+			}
+		});
 	}
 }

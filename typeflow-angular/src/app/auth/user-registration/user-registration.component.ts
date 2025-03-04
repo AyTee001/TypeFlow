@@ -9,6 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { valueTypeEqualityValidator } from '../validators/value-type-equality.validator';
 import { RouterLink } from '@angular/router';
+import { requiredDigit } from '../validators/required-digit';
+import { requiredLowercase } from '../validators/required-lowercase';
+import { requiredUppercase } from '../validators/required-upperCase';
+import { requiredNonAlphanumeric } from '../validators/required-non-alphanumeric';
+import {CommonModule } from '@angular/common';
 
 @Component({
   selector: 'tf-user-registration',
@@ -19,7 +24,8 @@ import { RouterLink } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    CommonModule
   ],
   templateUrl: './user-registration.component.html',
   styleUrls: ['./user-registration.component.scss', '../shared-styles/user-auth-forms.scss']
@@ -37,8 +43,13 @@ export class UserRegistrationComponent {
     this.registrationForm = this.fb.group({
       userName: ['', Validators.required],
       email: ['', Validators.required],
-      password: ['', Validators.required],
-      repeatedPassword: ['', [valueTypeEqualityValidator('password'),Validators.required]]
+      password: ['', [Validators.required,
+              Validators.minLength(12),
+              requiredDigit(),
+              requiredLowercase(),
+              requiredUppercase(),
+              requiredNonAlphanumeric()]],
+      repeatedPassword: ['', [valueTypeEqualityValidator('password'), Validators.required]]
     });
   }
 
@@ -52,8 +63,19 @@ export class UserRegistrationComponent {
         password: registrationFormValue.password
       };
 
-      this.userService.register(registrationRequest);
+      this.userService.register(registrationRequest).subscribe({
+        error: (error) => {
+          console.error('Failed to register user');
+          console.error(error);
+        }
+      });
     }
 
+  }
+
+  public hasError(controlName: string, errorName: string): boolean {
+    if(!controlName || !errorName) return false;
+
+    return this.registrationForm.get(controlName)?.hasError(errorName) ?? false;
   }
 }

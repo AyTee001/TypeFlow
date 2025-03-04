@@ -28,6 +28,10 @@ namespace TypeFlow.Web.Configs
                 options.Lockout.AllowedForNewUsers = true;
 
                 options.Password.RequiredLength = 12;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
 
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;

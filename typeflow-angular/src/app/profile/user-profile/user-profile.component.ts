@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../auth/services/user/user.service';
+import { UserData } from '../../auth/models/user.models';
 
 @Component({
   selector: 'tf-user-profile',
@@ -6,6 +8,16 @@ import { Component } from '@angular/core';
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss'
 })
-export class UserProfileComponent {
+export class UserProfileComponent implements OnInit {
+  public user?: UserData | null;
+
+  constructor(private userService: UserService) {
+
+  }
+  ngOnInit(): void {
+    this.userService.getUser().subscribe((user: UserData | null) => {
+      this.user = user;
+    });
+  }
 
 }
