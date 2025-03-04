@@ -31,8 +31,8 @@ namespace TypeFlow.Web
                 app.MapOpenApi();
             }
 
-            var corsSettings = app.Services.GetRequiredService<IOptions<CorsSettings>>();
-            app.UseCors(corsSettings?.Value?.PolicyName ?? string.Empty);
+            var corsSettings = app.Configuration.GetSection(CorsSettings.Name).Get<CorsSettings>();
+            app.UseCors(corsSettings?.PolicyName ?? string.Empty);
 
             app.UseAuthentication();
             app.UseAuthorization();

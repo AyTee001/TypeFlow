@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TypeFlow.Core\TypeFlow.Core.csproj" />
     <ProjectReference Include="..\TypeFlow.Infrastructure\TypeFlow.Infrastructure.csproj" />
   </ItemGroup>

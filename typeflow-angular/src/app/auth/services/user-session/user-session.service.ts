@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Tokens } from '../../models/auth-models';
 import dayjs from 'dayjs';
+import { UserData } from '../../models/user.models';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,8 +11,19 @@ export class UserSessionService {
 	private accessTokenName: string = 'TypeFlowAccessToken';
 	private refreshTokenExpirationName: string = 'TypeFlowRefreshTokenExpiration';
 	private accessTokenExpirationName: string = 'TypeFlowAccessTokenExpiration';
+	private userDataName: string = 'TypeFlowUserData';
 
 	constructor() { }
+
+	getUserData(): UserData | null {
+		const user = localStorage.getItem(this.userDataName);
+		if(!user) return null;
+		else return JSON.parse(user);
+	}
+
+	setUserData(user: UserData){
+		localStorage.setItem(this.userDataName, JSON.stringify(user));
+	}
 
 	setSession(tokens: Tokens) {
 		if(!tokens) return;
@@ -27,6 +39,7 @@ export class UserSessionService {
 		localStorage.removeItem(this.refreshTokenName);
 		localStorage.removeItem(this.accessTokenExpirationName);
 		localStorage.removeItem(this.refreshTokenExpirationName);
+		localStorage.removeItem(this.userDataName);
 	}
 
 	getTokens(): Tokens {
