@@ -29,6 +29,7 @@ namespace TypeFlow.Web.Controllers
             {
                 Email = userRegisterData.Email,
                 UserName = userRegisterData.UserName,
+                RegisteredAt = DateTime.UtcNow
             };
             var result = await _userManager.CreateAsync(user, userRegisterData.Password);
 
@@ -75,12 +76,11 @@ namespace TypeFlow.Web.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh()
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest refreshTokenRequest)
         {
-            var refreshToken = Request.Cookies[_authSettings.Value.RefreshToken.CookieName];
-            if (refreshToken is null) return Unauthorized();
+            if (refreshTokenRequest?.RefreshToken is null) return Unauthorized();
 
-            var tokenPair = await _tokenManager.RefreshToken(refreshToken);
+            var tokenPair = await _tokenManager.RefreshToken(refreshTokenRequest.RefreshToken);
 
             var response = new TokensResponse
             {

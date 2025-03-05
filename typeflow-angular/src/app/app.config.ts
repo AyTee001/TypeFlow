@@ -6,19 +6,16 @@ import { inject } from '@angular/core';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors, withXsrfConfiguration } from '@angular/common/http';
 import { authInterceptor } from './auth/interceptors/auth.interceptor';
+import { firstValueFrom } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideAppInitializer(() => {
+    provideAppInitializer(async () => {
       const userService = inject(UserService);
-      userService.getUser().subscribe({
-        error: (error) => {
-          console.error('Failed to get user data:', error);
-        }
-      });
+      await firstValueFrom(userService.init());
     })
   ]
 };

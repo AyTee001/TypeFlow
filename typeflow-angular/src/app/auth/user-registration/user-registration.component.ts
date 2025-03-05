@@ -7,12 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { valueTypeEqualityValidator } from '../validators/value-type-equality.validator';
+import { valueTypeEqualityValidator } from '../../../shared/validators/value-type-equality.validator';
 import { RouterLink } from '@angular/router';
-import { requiredDigit } from '../validators/required-digit';
-import { requiredLowercase } from '../validators/required-lowercase';
-import { requiredUppercase } from '../validators/required-upperCase';
-import { requiredNonAlphanumeric } from '../validators/required-non-alphanumeric';
+import { requiredDigit } from '../../../shared/validators/required-digit';
+import { requiredLowercase } from '../../../shared/validators/required-lowercase';
+import { requiredUppercase } from '../../../shared/validators/required-upperCase';
+import { requiredNonAlphanumeric } from '../../../shared/validators/required-non-alphanumeric';
 import {CommonModule } from '@angular/common';
 
 @Component({

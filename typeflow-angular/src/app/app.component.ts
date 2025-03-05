@@ -13,16 +13,9 @@ import { UserData } from './auth/models/user.models';
 	styleUrl: './app.component.scss'
 })
 export class AppComponent {
-	public user: UserData | null = null;
+	public user: UserData | null | undefined = null;
 
 	constructor(public userService: UserService) {
-		userService.getUser().subscribe({
-			next: (userData) => {
-				this.user = userData;
-			},
-			error: (error) => {
-				console.error('Failed to get user data:', error);
-			}
-		});
+		this.user = this.userService.user;
 	}
 }

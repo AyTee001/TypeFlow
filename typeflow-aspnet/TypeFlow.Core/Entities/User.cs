@@ -10,5 +10,7 @@ namespace TypeFlow.Core.Entities
 
         [Required]
         public override string? Email { get; set; }
+
+        public DateTime RegisteredAt { get; set; }
     }
 }

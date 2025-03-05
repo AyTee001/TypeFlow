@@ -29,7 +29,8 @@ namespace TypeFlow.Web.Controllers
             {
                 UserName = user.UserName!,
                 Email = user.Email!,
-                Id = user.Id
+                Id = user.Id,
+                RegisteredAt = user.RegisteredAt
             };
             return Ok(userData);
         }

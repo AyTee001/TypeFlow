@@ -16,3 +16,7 @@ export interface Tokens{
     accessTokenExpiration: Date;
     refreshTokenExpiration: Date;
 }
+
+export interface RefreshTokenRequest {
+    refreshToken: string;
+}

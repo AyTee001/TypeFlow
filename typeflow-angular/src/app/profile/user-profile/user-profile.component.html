@@ -1,7 +1,25 @@
 <div class="user-blocks">
 
     <div class="user-main-data">
-        
+        <img src="/user-profile-adobe-stock.jpg" alt="User profile picture" class="user-profile-picture">
+
+        <div class="user-main-data__container">
+            <div>
+                <h2 class="username">{{ user?.userName }}</h2>
+                <p class="user-email">{{ user?.email }}</p>
+                <p class="user-registration-date">{{ user?.registeredAt }}</p>  
+            </div>
+            <div class="user-characteristics">
+                <div class="user-characteristics__row">
+                    <p>Accuracy {{ user?.accuracy ?? "--"}}%</p>  
+                    <p>Total Tests {{ user?.totalTests ?? "--" }}</p>  
+                </div>
+                <div class="user-characteristics__row">
+                    <p>AverageCPM {{ user?.averageCPM ?? "--"}}</p>  
+                    <p>AverageWPM {{ user?.averageWPM ?? "--"}}</p>  
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="plots">

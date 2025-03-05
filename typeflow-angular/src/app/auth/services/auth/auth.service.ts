@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserRegistration, UserLogin, Tokens } from '../../models/auth-models';
+import { UserRegistration, UserLogin, Tokens, RefreshTokenRequest } from '../../models/auth-models';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -27,8 +27,8 @@ export class AuthService {
 		return this.httpClient.post<void>(this.logoutEndpoint, tokens);
 	}
 
-	public refreshToken(refreshToken: string): Observable<Tokens> {
-		return this.httpClient.post<Tokens>(this.refreshTokenEndpoint, { refreshToken });
+	public refreshToken(refreshTokenRequest: RefreshTokenRequest): Observable<Tokens> {
+		return this.httpClient.post<Tokens>(this.refreshTokenEndpoint, refreshTokenRequest);
 	}
 
 }

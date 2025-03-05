@@ -29,7 +29,6 @@ export class UserService {
 			}),
 			tap((userData) => {
 				this._user = userData;
-				this.sessionService.setUserData(userData);
 			})
 		);
 	}
@@ -42,7 +41,6 @@ export class UserService {
 		.pipe(
 			take(1),
 			tap(() => {
-				this.sessionService.revokeSession();
 				this._user = null;
 			})
 		).subscribe();
@@ -60,7 +58,6 @@ export class UserService {
 			}),
 			tap((userData) => {
 				this._user = userData;
-				this.sessionService.setUserData(userData);
 			})
 		);
 	}
@@ -69,15 +66,12 @@ export class UserService {
 		return !!this._user;
 	}
 
-	public getUser(): Observable<UserData | null> {
-		if(this._user) return of(this._user);
 
-		let userData = this.sessionService.getUserData();
-		if(userData){
-			this._user = userData;
-			return of(this._user);
-		}
+	public get user(): UserData | null | undefined {
+		return this._user;
+	}
 
+	public init(): Observable<UserData | null> {
 		return this.httpClient.get<UserData>(this.userDataEndpoint)
 		.pipe(
 			take(1),
