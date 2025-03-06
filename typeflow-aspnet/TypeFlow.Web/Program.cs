@@ -1,4 +1,5 @@
 using TypeFlow.Application.Security;
+using TypeFlow.Application.Services.User;
 using TypeFlow.Web.Configs;
 using TypeFlow.Web.Options;
 using TypeFlow.Web.StartupExtentions;
@@ -17,6 +18,7 @@ namespace TypeFlow.Web
             builder.Services.AddOpenApi();
 
             builder.Services.AddTransient<ITokenManager, TokenManager>();
+            builder.Services.AddTransient<IUserService, UserService>();
 
             builder.ConfigureStorageWithIdentity();
             builder.AddAuth();

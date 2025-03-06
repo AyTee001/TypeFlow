@@ -4,7 +4,7 @@ import { UserSessionService } from '../user-session/user-session.service';
 import { UserLogin, UserRegistration } from '../../models/auth-models';
 import { Observable, of, switchMap, take, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { UserData } from '../../models/user.models';
+import { FullUserData, UserData } from '../../models/user.models';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,6 +12,7 @@ import { UserData } from '../../models/user.models';
 export class UserService {
 	private apiUrl: string = 'https://localhost:7244/';
 	private userDataEndpoint: string = `${this.apiUrl}user/getUser`;
+	private fullUserDataEndpoint: string = `${this.apiUrl}user/getFullUser`;
 
 	private _user?: UserData | null;
 
@@ -20,7 +21,6 @@ export class UserService {
 	public login(loginData: UserLogin) {
 		return this.authService.login(loginData)
 		.pipe(
-			take(1),
 			tap((tokens) => {
 				this.sessionService.setSession(tokens);
 			}),
@@ -39,7 +39,6 @@ export class UserService {
 
 		this.authService.logout(tokens)
 		.pipe(
-			take(1),
 			tap(() => {
 				this._user = null;
 			})
@@ -49,7 +48,6 @@ export class UserService {
 	public register(registrationData: UserRegistration) {
 		return this.authService.register(registrationData)
 		.pipe(
-			take(1),
 			tap((tokens) => {
 				this.sessionService.setSession(tokens);
 			}),
@@ -74,7 +72,6 @@ export class UserService {
 	public init(): Observable<UserData | null> {
 		return this.httpClient.get<UserData>(this.userDataEndpoint)
 		.pipe(
-			take(1),
 			tap((userData) => {
 				this._user = userData;
 				this.sessionService.setUserData(userData);
@@ -82,4 +79,12 @@ export class UserService {
 		)
 	}
 
+	public getFullUserData(): Observable<FullUserData | null> {
+		if(!this._user) return of(null);
+
+		return this.httpClient.get<FullUserData>(this.fullUserDataEndpoint)
+		.pipe(
+			take(1)
+		);
+	}
 }

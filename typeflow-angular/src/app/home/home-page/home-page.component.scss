@@ -1,0 +1,52 @@
+.typing-test {
+    &__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 160px;
+    }
+
+    &__mode {
+        background-color: var(--mat-sys-on-secondary);
+        width: 70%;
+        height: 80px;
+        border-radius: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        padding-left: 16px;
+        padding-right: 16px;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    &__mode-name, &__mode{
+        display: flex;
+        align-items: center;
+    }
+
+    &__mode-name {
+        justify-content: center;
+        margin-right: 24px;
+    }
+}
+
+.typing-test-container {
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+
+@media screen and (max-width: 650px){
+    .typing-test{
+        &__mode-description{
+            display: none;
+        }
+    
+        &__mode{
+            width: 50%;
+        }    
+    }
+}

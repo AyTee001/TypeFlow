@@ -13,6 +13,7 @@ import { requiredLowercase } from '../../../shared/validators/required-lowercase
 import { requiredUppercase } from '../../../shared/validators/required-upperCase';
 import { requiredNonAlphanumeric } from '../../../shared/validators/required-non-alphanumeric';
 import { CommonModule } from '@angular/common';
+import { take } from 'rxjs';
 
 @Component({
 	selector: 'tf-user-login',
@@ -59,7 +60,10 @@ export class UserLoginComponent {
 				password: loginFormValue.password
 			};
 
-			this.userService.login(loginRequest).subscribe({
+			this.userService.login(loginRequest)
+			.pipe(
+				take(1)
+			).subscribe({
 				next:() => {
 					this.loginFailedError = false;
 				},

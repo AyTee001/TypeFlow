@@ -14,6 +14,7 @@ import { requiredLowercase } from '../../../shared/validators/required-lowercase
 import { requiredUppercase } from '../../../shared/validators/required-upperCase';
 import { requiredNonAlphanumeric } from '../../../shared/validators/required-non-alphanumeric';
 import {CommonModule } from '@angular/common';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'tf-user-registration',
@@ -53,7 +54,7 @@ export class UserRegistrationComponent {
     });
   }
 
-  login() {
+  register() {
     const registrationFormValue = this.registrationForm.getRawValue();
 
     if (this.registrationForm.valid) {
@@ -63,7 +64,10 @@ export class UserRegistrationComponent {
         password: registrationFormValue.password
       };
 
-      this.userService.register(registrationRequest).subscribe({
+      this.userService.register(registrationRequest)
+      .pipe(
+        take(1)
+      ).subscribe({
         error: (error) => {
           console.error('Failed to register user');
           console.error(error);

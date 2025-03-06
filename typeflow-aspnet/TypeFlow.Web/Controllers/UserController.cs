@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TypeFlow.Application.Services.User;
 using TypeFlow.Application.Services.User.Dto;
 using TypeFlow.Core.Entities;
 using TypeFlow.Web.Extensions;
@@ -9,10 +10,13 @@ namespace TypeFlow.Web.Controllers
 {
     [Route("user")]
     [ApiController]
-    public class UserController(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor) : ControllerBase
+    public class UserController(UserManager<User> userManager,
+        IHttpContextAccessor httpContextAccessor,
+        IUserService userService) : ControllerBase
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+        private readonly IUserService  _userService = userService;
 
         [Route("getUser")]
         public async Task<IActionResult> GetUser()
@@ -33,6 +37,17 @@ namespace TypeFlow.Web.Controllers
                 RegisteredAt = user.RegisteredAt
             };
             return Ok(userData);
+        }
+
+        [Route("getFullUser")]
+        public async Task<IActionResult> GetFullUserData()
+        {
+            var userId = _httpContextAccessor.GetCurrentUserId();
+            if (userId is null) return Unauthorized();
+
+            var fullUserData = await _userService.GetFullUserData((Guid)userId);
+
+            return Ok(fullUserData);
         }
     }
 }

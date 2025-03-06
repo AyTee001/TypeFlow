@@ -1,3 +1,5 @@
+<tf-header></tf-header>
+
 <div class="user-blocks">
 
     <div class="user-main-data">
@@ -7,16 +9,16 @@
             <div>
                 <h2 class="username">{{ user?.userName }}</h2>
                 <p class="user-email">{{ user?.email }}</p>
-                <p class="user-registration-date">{{ user?.registeredAt }}</p>  
+                <p class="user-registration-date">{{ user?.registeredAt | date }}</p>  
             </div>
             <div class="user-characteristics">
                 <div class="user-characteristics__row">
-                    <p>Accuracy {{ user?.accuracy ?? "--"}}%</p>  
-                    <p>Total Tests {{ user?.totalTests ?? "--" }}</p>  
+                    <p> <span>Accuracy</span> {{ user?.accuracy ?? "--"}}%</p>  
+                    <p> <span>Total Tests</span> {{ user?.totalTests ?? "--" }}</p>  
                 </div>
                 <div class="user-characteristics__row">
-                    <p>AverageCPM {{ user?.averageCPM ?? "--"}}</p>  
-                    <p>AverageWPM {{ user?.averageWPM ?? "--"}}</p>  
+                    <p> <span>Average CPM</span> {{ user?.averageCPM ?? "--"}}</p>  
+                    <p> <span>Average WPM</span> {{ user?.averageWPM ?? "--"}}</p>  
                 </div>
             </div>
         </div>
