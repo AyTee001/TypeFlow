@@ -10,4 +10,13 @@
         </div>
         <tf-timer></tf-timer>
     </div>
+    <div>
+        <div class="typing-test__text">
+            {{text}}
+        </div>
+        <textarea class="typing-test__input" [(ngModel)]="userText" placeholder="Start typing"></textarea>
+    </div>
+    <div class="typing-test__controls">
+        <button mat-raised-button color="primary">Next challenge</button>
+    </div>
 </div>
