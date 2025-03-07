@@ -12,11 +12,22 @@
     </div>
     <div>
         <div class="typing-test__text">
-            {{text}}
+            {{challenge?.text}}
         </div>
-        <textarea class="typing-test__input" [(ngModel)]="userText" placeholder="Start typing"></textarea>
+        <textarea class="typing-test__input" id="userInput"
+            (keydown)="onKeyDown($event)"
+            (mousedown)="onMouseDown($event)"
+            (mouseup)="onMouseUp($event)"
+            (paste)="onPaste($event)"
+            (copy)="onCopy($event)"
+            (focus)="onFocus($event)"
+            [(ngModel)]="userText" placeholder="Start typing"
+        ></textarea>
     </div>
     <div class="typing-test__controls">
-        <button mat-raised-button color="primary">Next challenge</button>
+        <button mat-raised-button color="primary" (click)="loadNextChallenge()">Next challenge</button>
+        <div>
+            {{completionMessage}}
+        </div>
     </div>
 </div>

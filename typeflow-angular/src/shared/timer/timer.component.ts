@@ -22,23 +22,27 @@ export class TimerComponent {
 
 	startTimer() {
 		if (!this.interval) {
-		  this.interval = setInterval(() => {
-			this.timeElapsed++;
-		  }, 1000);
+			this.interval = setInterval(() => {
+				this.timeElapsed++;
+			}, 1000);
 		}
-	  }
-	
-	  stopTimer() {
+	}
+
+	stopTimer() {
 		clearInterval(this.interval);
 		this.interval = null;
-	  }
-	
-	  resetTimer() {
+	}
+
+	resetTimer() {
 		this.stopTimer();
 		this.timeElapsed = 0;
-	  }
-	
-	  ngOnDestroy() {
+	}
+
+	getCurrentTimeSeconds() {
+		return this.timeElapsed;
+	}
+
+	ngOnDestroy() {
 		clearInterval(this.interval);
-	  }
+	}
 }

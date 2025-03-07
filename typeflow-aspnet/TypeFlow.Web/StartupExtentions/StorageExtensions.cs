@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TypeFlow.Core.Entities;
 using TypeFlow.Infrastructure.Context;
+using TypeFlow.Infrastructure.Seed;
 
 namespace TypeFlow.Web.Configs
 {
@@ -10,7 +11,16 @@ namespace TypeFlow.Web.Configs
         public static void ConfigureStorageWithIdentity(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<TypeFlowDbContext>(opt
-                => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                => {
+                    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                    opt.UseSeeding((context, _) =>
+                    {
+                        context.Set<TypingChallenge>().ExecuteDelete();
+                        var challenges = SeedingHelper.GetTypingChallenges();
+                        context.Set<TypingChallenge>().AddRange(challenges);
+                        context.SaveChanges();
+                    });
+                });
 
             builder.Services.AddDataProtection();
 
