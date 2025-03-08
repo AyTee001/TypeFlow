@@ -9,7 +9,7 @@ namespace TypeFlow.Web.Controllers
     {
         private readonly ITypingChallengeService _typingChallengeService = typingChallengeService;
 
-        [Route("random")]
+        [HttpGet("random")]
         public async Task<IActionResult> GetRandomChallenge()
         {
             var challenge = await _typingChallengeService.GetRandomTypingChallenge();

@@ -10,11 +10,11 @@
         </div>
         <tf-timer></tf-timer>
     </div>
-    <div>
+    <div class="typing-test__text-container">
         <div class="typing-test__text">
             {{challenge?.text}}
         </div>
-        <textarea class="typing-test__input" id="userInput"
+        <textarea class="typing-test__input" id="userInput" [disabled]="textAreaDiabled"
             (keydown)="onKeyDown($event)"
             (mousedown)="onMouseDown($event)"
             (mouseup)="onMouseUp($event)"
@@ -23,9 +23,14 @@
             (focus)="onFocus($event)"
             [(ngModel)]="userText" placeholder="Start typing"
         ></textarea>
+        @if(savingInProgress){
+            <div class="spinner-container">
+                <mat-spinner diameter="48"></mat-spinner>
+            </div>    
+        }
     </div>
     <div class="typing-test__controls">
-        <button mat-raised-button color="primary" (click)="loadNextChallenge()">Next challenge</button>
+        <button mat-raised-button color="primary" (click)="loadNextChallenge()" [disabled]="savingInProgress">Next challenge</button>
         <div>
             {{completionMessage}}
         </div>

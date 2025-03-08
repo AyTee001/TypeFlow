@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Typing Session Results</h2>
+<mat-dialog-content class="dialog-content">
+  <mat-list>
+    <mat-list-item>
+      <strong>Words Per Minute:</strong> {{ data.wordsPerMinute }}
+    </mat-list-item>
+    <mat-list-item>
+      <strong>Characters Per Minute:</strong> {{ data.charactersPerMinute }}
+    </mat-list-item>
+    <mat-list-item>
+      <strong>Accuracy:</strong> {{ data.accuracy | number: '1.0-2' }}%
+      <mat-progress-bar mode="determinate" [value]="data.accuracy"></mat-progress-bar>
+    </mat-list-item>
+    <mat-list-item>
+      <strong>Time Taken:</strong> {{ data.finishedInSeconds }} seconds
+    </mat-list-item>
+    <mat-list-item>
+      <strong>Errors:</strong> {{ data.errors }}
+    </mat-list-item>
+    <mat-list-item>
+      <strong>Total Characters Typed:</strong> {{ data.charactersCount }}
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

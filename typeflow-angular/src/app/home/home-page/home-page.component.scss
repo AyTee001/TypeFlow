@@ -74,6 +74,24 @@
         justify-content: flex-end;
         width: 100%;
     }
+
+    &__text-container{
+        position: relative;
+        padding: 16px;
+    }
+}
+
+.spinner-container{
+    background-color: rgba(50, 50, 50, 0.5);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .typing-test-container {

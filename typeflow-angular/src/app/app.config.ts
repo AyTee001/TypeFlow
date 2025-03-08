@@ -9,13 +9,17 @@ import { authInterceptor } from './auth/interceptors/auth.interceptor';
 import { firstValueFrom } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
-    provideAppInitializer(async () => {
-      const userService = inject(UserService);
-      await firstValueFrom(userService.init());
-    })
-  ]
+	providers: [
+		provideZoneChangeDetection({ eventCoalescing: true }),
+		provideRouter(routes),
+		provideHttpClient(withInterceptors([authInterceptor])),
+		provideAppInitializer(async () => {
+			const userService = inject(UserService);
+			try {
+				await firstValueFrom(userService.init());
+			} catch (error) {
+				console.warn('User initialization failed:', error);
+			}
+		})
+	]
 };

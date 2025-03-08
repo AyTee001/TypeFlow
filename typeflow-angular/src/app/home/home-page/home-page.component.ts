@@ -8,11 +8,17 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { TypingChallengeService } from '../../../shared/services/typing-challenge/typing-challenge.service';
 import { TypingChallengeData } from '../../../shared/models/typing-challenge.models';
-import { take } from 'rxjs';
+import { take, tap } from 'rxjs';
+import { TypingSessionService } from '../../../shared/services/typing-session/typing-session.service';
+import { TypingSessionData, TypingSessionDisplayResult, TypingSessionResult } from '../../../shared/models/typing-session.models';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { UserService } from '../../auth/services/user/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { TypingSessionResultDialogComponent } from '../dialogs/typing-session-result-dialog/typing-session-result-dialog.component';
 
 @Component({
 	selector: 'tf-home-page',
-	imports: [HeaderComponent, TimerComponent, MatIconModule, MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule],
+	imports: [MatProgressSpinnerModule, HeaderComponent, TimerComponent, MatIconModule, MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule],
 	templateUrl: './home-page.component.html',
 	styleUrl: './home-page.component.scss'
 })
@@ -23,14 +29,24 @@ export class HomePageComponent implements OnInit {
 		return this._challenge;
 	}
 	private _challenge: TypingChallengeData | undefined;
-	public completionMessage = "";
+	public textAreaDiabled: boolean = false;
 
+	public get challengeResult(){
+		return this._challengeResult;
+	}
+	private _challengeResult: TypingSessionDisplayResult | undefined;
+	public savingInProgress: boolean = false;
+
+	public completionMessage = "";
 	public userText: string = "";
 
 	private _sessionInProgress: boolean = false;
 	private _currentErrorCount: number = 0;
 
-	constructor(private typingChallengeService: TypingChallengeService){
+	constructor(private typingChallengeService: TypingChallengeService,
+		private typingSessionService: TypingSessionService,
+		private userSercice: UserService,
+		private dialog: MatDialog){
 
 	}
 
@@ -87,7 +103,74 @@ export class HomePageComponent implements OnInit {
 	private stopSession(){
 		this.timerComponent?.stopTimer();
 		this._sessionInProgress = false;
-		this.completionMessage = "You made " + this._currentErrorCount + " errors";
+		this.textAreaDiabled = true;
+		
+		if(this.userSercice.isAuthenticated()){
+			this.saveSession();
+		}
+		else{
+			this.getUnsavedResult();
+		}
+	}
+
+	private getUnsavedResult(){
+		if(!this._challenge) return;
+
+		const finishedInSeconds = this.timerComponent.getCurrentTimeSeconds();
+		const characterCount = this._challenge.text.length;
+		const errorCount = this._currentErrorCount;
+
+		const minutes = finishedInSeconds / 60;
+
+    	const safeMinutes = minutes > 0 ? minutes : 1 / 60;
+
+    	const accuracy = ((characterCount - errorCount) / characterCount) * 100;
+    	const wpm = Math.floor(characterCount / (5 * safeMinutes));
+    	const cpm = Math.floor(characterCount / safeMinutes);
+
+		const result: TypingSessionDisplayResult = {
+			wordsPerMinute: wpm,
+			charactersPerMinute: cpm,
+			accuracy: accuracy,
+			finishedInSeconds: finishedInSeconds,
+			errors: errorCount,
+			charactersCount: characterCount
+		}
+
+		this._challengeResult = result;
+
+		this.dialog.open(TypingSessionResultDialogComponent, {
+			data: this._challengeResult
+		});
+	}
+
+	private saveSession(){
+		if(!this._challenge) return;
+
+		const sessionPayload: TypingSessionData = {
+			challengeId: this._challenge.id,
+			characterCount: this._challenge.text.length,
+			errorCount: this._currentErrorCount,
+			finishedInSeconds: this.timerComponent.getCurrentTimeSeconds()
+		};
+
+		this.typingSessionService.recordTypingSession(sessionPayload)
+		.pipe(
+			tap(() => this.savingInProgress = true),
+			take(1)
+		).subscribe({
+			next: (res) => {
+				this._challengeResult = res as TypingSessionDisplayResult;
+				this.savingInProgress = false;
+				this.dialog.open(TypingSessionResultDialogComponent, {
+					data: this._challengeResult
+				})		
+			},
+			error: (error) => {
+				this.savingInProgress = false;
+				console.log(error);
+			}
+		})
 	}
 
 	private resetSession(){
@@ -96,6 +179,7 @@ export class HomePageComponent implements OnInit {
 		this._sessionInProgress = false;
 		this._currentErrorCount = 0;
 		this.completionMessage = "";
+		this.textAreaDiabled = false;
 	}
 
 	private handleKeyDown(key: string) {
