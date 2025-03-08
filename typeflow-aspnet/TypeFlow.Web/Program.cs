@@ -1,5 +1,6 @@
 using TypeFlow.Application.Security;
 using TypeFlow.Application.Services.TypingChallenge;
+using TypeFlow.Application.Services.TypingSession;
 using TypeFlow.Application.Services.User;
 using TypeFlow.Web.Configs;
 using TypeFlow.Web.Options;
@@ -21,6 +22,7 @@ namespace TypeFlow.Web
             builder.Services.AddTransient<ITokenManager, TokenManager>();
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<ITypingChallengeService, TypingChallengeService>();
+            builder.Services.AddTransient<ITypingSessionService, TypingSessionService>();
 
             builder.ConfigureStorageWithIdentity();
             builder.AddAuth();

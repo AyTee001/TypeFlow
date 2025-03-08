@@ -13,13 +13,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 	const token = sessionService.getAccessToken();
 
-	if (!token) {
-		return next(req);
-	}
+	const resultingRequest = !token ? req : addToken(req, token);
 
-	let cloned = addToken(req, token);
-
-	return next(cloned).pipe(
+	return next(resultingRequest).pipe(
 		catchError(error => {
 			if (error.status === 401) {
 				return handleTokenExpiration(req, next);

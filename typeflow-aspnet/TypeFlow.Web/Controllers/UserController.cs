@@ -11,17 +11,16 @@ namespace TypeFlow.Web.Controllers
     [Route("user")]
     [ApiController]
     public class UserController(UserManager<User> userManager,
-        IHttpContextAccessor httpContextAccessor,
         IUserService userService) : ControllerBase
     {
         private readonly UserManager<User> _userManager = userManager;
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
         private readonly IUserService  _userService = userService;
 
-        [Route("getUser")]
+
+        [HttpGet("getUser")]
         public async Task<IActionResult> GetUser()
         {
-            var userId = _httpContextAccessor.GetCurrentUserId();
+            var userId = HttpContext.GetCurrentUserId();
 
             if (userId is null) return Unauthorized();
 
@@ -39,10 +38,10 @@ namespace TypeFlow.Web.Controllers
             return Ok(userData);
         }
 
-        [Route("getFullUser")]
+        [HttpGet("getFullUser")]
         public async Task<IActionResult> GetFullUserData()
         {
-            var userId = _httpContextAccessor.GetCurrentUserId();
+            var userId = HttpContext.GetCurrentUserId();
             if (userId is null) return Unauthorized();
 
             var fullUserData = await _userService.GetFullUserData((Guid)userId);

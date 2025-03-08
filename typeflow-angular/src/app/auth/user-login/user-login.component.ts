@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../services/user/user.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { requiredDigit } from '../../../shared/validators/required-digit';
 import { requiredLowercase } from '../../../shared/validators/required-lowercase';
 import { requiredUppercase } from '../../../shared/validators/required-upperCase';
@@ -34,7 +34,7 @@ export class UserLoginComponent {
 	public loginForm!: FormGroup;
 	loginFailedError: boolean = false;
 
-	constructor(private fb: FormBuilder, private userService: UserService) {
+	constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
 		this.createForm();
 
 	}
@@ -66,6 +66,7 @@ export class UserLoginComponent {
 			).subscribe({
 				next:() => {
 					this.loginFailedError = false;
+					this.router.navigate(['/home']);
 				},
 				error: (error) => {
 					this.loginFailedError = true;
