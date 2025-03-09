@@ -13,22 +13,19 @@
             </div>
             <div class="user-characteristics">
                 <div class="user-characteristics__row">
-                    <p> <span>Accuracy</span> {{ user?.accuracy ?? "--"}}%</p>  
-                    <p> <span>Total Tests</span> {{ user?.totalTests ?? "--" }}</p>  
+                    <p>Best result so far:</p>
                 </div>
                 <div class="user-characteristics__row">
-                    <p> <span>Average CPM</span> {{ user?.averageCPM ?? "--"}}</p>  
-                    <p> <span>Average WPM</span> {{ user?.averageWPM ?? "--"}}</p>  
+                    <p> <span>Accuracy</span> {{ user?.statistics?.bestResult?.accuracy}}%</p>  
+                    <p> <span>Average CPM</span> {{ user?.statistics?.bestResult?.charactersPerMinute ?? "--"}}</p>  
+                    <p> <span>Average WPM</span> {{ user?.statistics?.bestResult?.wordsPerMinute ?? "--"}}</p>  
                 </div>
             </div>
         </div>
     </div>
 
     <div class="chart">
-        <!-- <div class="chart">
-            <tf-user-stats-charts [chartId]="'accuracy'"></tf-user-stats-charts>
-        </div> -->
-        <tf-user-stats-charts [chartId]="'wpm'"></tf-user-stats-charts>
+        <tf-user-stats-charts></tf-user-stats-charts>
     </div>
 
 </div>

@@ -30,3 +30,9 @@ export interface TypingSessionStatistics{
     bestResult: TypingSessionResultData | undefined | null,
     worstResult: TypingSessionResultData | undefined | null
 }
+
+export interface TypingSessionChartStatistics{
+    dates: Date[],
+    wpmValues: number | null | undefined,
+    accuracyValues: number | null | undefined
+}

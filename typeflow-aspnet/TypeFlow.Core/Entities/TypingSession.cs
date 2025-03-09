@@ -13,5 +13,7 @@ namespace TypeFlow.Core.Entities
         public float Accuracy { get; set; }
         public int WordsPerMinute { get; set; }
         public int CharactersPerMinute { get; set; }
+
+        public DateTime FinishedAt { get; set; }
     }
 }

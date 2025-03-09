@@ -1,3 +1,5 @@
+import { TypingSessionStatistics } from "../../../shared/models/typing-session.models";
+
 export interface UserData {
     id: string;
     userName: string;
@@ -7,8 +9,5 @@ export interface UserData {
 
 export interface FullUserData extends UserData
 {
-    accuracy: number;
-    totalTests: number;
-    averageCPM: number;
-    averageWPM: number;
+    statistics: TypingSessionStatistics;
 }

@@ -52,8 +52,12 @@
 
 .user-characteristics{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+
+    p{
+        margin: 8px;
+    }
 
     &__row{
         display: flex;

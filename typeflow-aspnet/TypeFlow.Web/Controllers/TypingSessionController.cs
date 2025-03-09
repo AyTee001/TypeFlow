@@ -19,8 +19,29 @@ namespace TypeFlow.Web.Controllers
             if (userId is null) return Unauthorized();
 
             var typingSessionResult = await _typingSessionService.RecordTypingSession(typingSession, (Guid)userId);
-
             return Ok(typingSessionResult);
+        }
+
+        [HttpGet("general")]
+        public async Task<IActionResult> GetGeneralTypingSessionStats()
+        {
+            var userId = HttpContext.GetCurrentUserId();
+
+            if (userId is null) return Unauthorized();
+
+            var statistics = await _typingSessionService.GetTypingSessionStatistics((Guid)userId);
+            return Ok(statistics);
+        }
+
+        [HttpGet("chart")]
+        public async Task<IActionResult> GetTypingSessionStatisticsForChart()
+        {
+            var userId = HttpContext.GetCurrentUserId();
+
+            if (userId is null) return Unauthorized();
+
+            var statistics = await _typingSessionService.GetTypingSessionStatisticsForChart((Guid)userId);
+            return Ok(statistics);
         }
     }
 }

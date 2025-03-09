@@ -16,7 +16,7 @@ namespace TypeFlow.Infrastructure.Context.Config
             builder.HasOne<TypingChallenge>()
                 .WithMany()
                 .HasForeignKey(x => x.ChallengeId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
