@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TypeFlow.Application.Services.TypingSession;
-using TypeFlow.Application.Services.TypingSession.Dto;
 using TypeFlow.Application.Services.User.Dto;
 using TypeFlow.Infrastructure.Context;
 
 namespace TypeFlow.Application.Services.User
 {
-    public class UserService(UserManager<Core.Entities.User> userManager, ITypingSessionService typingSessionService, TypeFlowDbContext context) : IUserService
+    public class UserService(ITypingSessionService typingSessionService, TypeFlowDbContext context) : IUserService
     {
-        private readonly UserManager<Core.Entities.User> _userManager = userManager;
         private readonly TypeFlowDbContext _context = context;
         private readonly ITypingSessionService _typingSessionService = typingSessionService;
         public async Task<FullUserData> GetFullUserData(Guid userId)

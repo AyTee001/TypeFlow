@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using TypeFlow.Core.Entities;
-using TypeFlow.Core.Entities.Enums;
 
 namespace TypeFlow.Infrastructure.Seed
 {
@@ -12,7 +11,6 @@ namespace TypeFlow.Infrastructure.Seed
 
             int counter = -1;
             var faker = new Faker<TypingChallenge>()
-                .RuleFor(x => x.Difficulty, x => ChallengeDifficulty.Unset)
                 .RuleFor(x => x.CreatedAt, x => DateTime.UtcNow)
                 .RuleFor(x => x.Id, x => Guid.NewGuid())
                 .RuleFor(x => x.Text, x =>

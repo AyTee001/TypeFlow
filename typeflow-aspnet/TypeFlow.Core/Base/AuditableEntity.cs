@@ -1,6 +1,6 @@
 ﻿namespace TypeFlow.Core.Base
 {
-    public class AuditableEntity : Entity
+    public abstract class AuditableEntity : Entity
     {
         public DateTime CreatedAt { get; set; }
         public Guid? CreatedBy { get; set; }

@@ -12,7 +12,7 @@ namespace TypeFlow.Web.Controllers
         private readonly ITypingSessionService _typingSessionService = typingSessionService;
 
         [HttpPost("recordSession")]
-        public async Task<IActionResult> RecordTypingSession(TypingSessionData typingSession)
+        public async Task<IActionResult> RecordTypingSession([FromBody]TypingSessionData typingSession)
         {
             var userId = HttpContext.GetCurrentUserId();
 
