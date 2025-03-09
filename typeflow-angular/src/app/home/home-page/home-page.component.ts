@@ -10,7 +10,7 @@ import { TypingChallengeService } from '../../../shared/services/typing-challeng
 import { TypingChallengeData } from '../../../shared/models/typing-challenge.models';
 import { take, tap } from 'rxjs';
 import { TypingSessionService } from '../../../shared/services/typing-session/typing-session.service';
-import { TypingSessionData, TypingSessionDisplayResult, TypingSessionResult } from '../../../shared/models/typing-session.models';
+import { TypingSessionData, TypingSessionDisplayResult } from '../../../shared/models/typing-session.models';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UserService } from '../../auth/services/user/user.service';
 import { MatDialog } from '@angular/material/dialog';

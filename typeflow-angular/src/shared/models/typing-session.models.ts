@@ -5,7 +5,7 @@ export interface TypingSessionData {
     finishedInSeconds: number
 }
 
-export interface TypingSessionResult {
+export interface TypingSessionResultData {
     id: number,
     userId: number,
     challengeId: number | null | undefined,
@@ -24,4 +24,9 @@ export interface TypingSessionDisplayResult {
     accuracy: number
     wordsPerMinute: number
     charactersPerMinute: number
+}
+
+export interface TypingSessionStatistics{
+    bestResult: TypingSessionResultData | undefined | null,
+    worstResult: TypingSessionResultData | undefined | null
 }

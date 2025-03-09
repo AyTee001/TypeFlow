@@ -4,10 +4,11 @@ import { FullUserData, UserData } from '../../auth/models/user.models';
 import { DatePipe } from '@angular/common';
 import { take } from 'rxjs';
 import { HeaderComponent } from '../../../shared/header/header.component';
+import { UserStatsChartsComponent } from '../user-stats-charts/user-stats-charts.component';
 
 @Component({
 	selector: 'tf-user-profile',
-	imports: [DatePipe, HeaderComponent],
+	imports: [DatePipe, HeaderComponent, UserStatsChartsComponent],
 	templateUrl: './user-profile.component.html',
 	styleUrl: './user-profile.component.scss'
 })
