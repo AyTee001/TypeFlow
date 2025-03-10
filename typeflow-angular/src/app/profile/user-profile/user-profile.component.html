@@ -16,9 +16,9 @@
                     <p>Best result so far:</p>
                 </div>
                 <div class="user-characteristics__row">
-                    <p> <span>Accuracy</span> {{ user?.statistics?.bestResult?.accuracy}}%</p>  
-                    <p> <span>Average CPM</span> {{ user?.statistics?.bestResult?.charactersPerMinute ?? "--"}}</p>  
-                    <p> <span>Average WPM</span> {{ user?.statistics?.bestResult?.wordsPerMinute ?? "--"}}</p>  
+                    <p> <span>Accuracy</span> {{ user?.statistics?.bestResult?.accuracy ?? "--"}}%</p>  
+                    <p> <span>CPM</span> {{ user?.statistics?.bestResult?.charactersPerMinute ?? "--"}}</p>  
+                    <p> <span>WPM</span> {{ user?.statistics?.bestResult?.wordsPerMinute ?? "--"}}</p>  
                 </div>
             </div>
         </div>
