@@ -84,8 +84,10 @@ export class HomePageComponent implements OnInit {
 		if ((event as any).key !== 'Backspace' && !(event as any).key.match(/^[a-zA-Z0-9 .,!?()'"[\]{}&%$#@;:<>_^+=\-*|\\/`~\r\n\t]*$/)) {
 			event.preventDefault();
 		}
+	}
 
-		this.handleKeyDown((event as any).key);
+	onInput(){
+		this.handleKeyDown();
 
 		if(this.shouldFinalizeSession()){
 			this.stopSession();
@@ -182,9 +184,8 @@ export class HomePageComponent implements OnInit {
 		this.textAreaDiabled = false;
 	}
 
-	private handleKeyDown(key: string) {
-		if (!key
-			|| !this.userText
+	private handleKeyDown() {
+		if (!this.userText
 			|| !this._challenge?.text
 			|| this.userText.length > this._challenge.text.length) {
 			return;

@@ -2,13 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import { MatListModule } from '@angular/material/list'
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, PercentPipe } from '@angular/common';
 import { TypingSessionDisplayResult } from '../../../../shared/models/typing-session.models';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
 	selector: 'tf-typing-session-result-dialog',
-	imports: [MatDialogModule, MatListModule, MatProgressBarModule, DecimalPipe, MatButtonModule],
+	imports: [MatDialogModule, MatListModule, MatProgressBarModule, PercentPipe, MatButtonModule],
 	templateUrl: './typing-session-result-dialog.component.html',
 	styleUrl: './typing-session-result-dialog.component.scss'
 })

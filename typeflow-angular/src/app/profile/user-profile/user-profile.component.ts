@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../auth/services/user/user.service';
-import { FullUserData, UserData } from '../../auth/models/user.models';
-import { DatePipe } from '@angular/common';
+import { FullUserData } from '../../auth/models/user.models';
+import { DatePipe, PercentPipe } from '@angular/common';
 import { take } from 'rxjs';
 import { HeaderComponent } from '../../../shared/header/header.component';
 import { UserStatsChartsComponent } from '../user-stats-charts/user-stats-charts.component';
 
 @Component({
 	selector: 'tf-user-profile',
-	imports: [DatePipe, HeaderComponent, UserStatsChartsComponent],
+	imports: [DatePipe, PercentPipe, HeaderComponent, UserStatsChartsComponent],
 	templateUrl: './user-profile.component.html',
 	styleUrl: './user-profile.component.scss'
 })

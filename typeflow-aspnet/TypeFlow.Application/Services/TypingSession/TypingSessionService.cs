@@ -111,11 +111,12 @@ namespace TypeFlow.Application.Services.TypingSession
 
         public async Task<TypingSessionChartStatistics> GetTypingSessionStatisticsForChart(Guid userId)
         {
-            var today = DateTime.UtcNow.Date;
+            var startOfToday = DateTime.UtcNow.Date;
             var daysAgo = DateTime.UtcNow.Date.AddDays(-10);
+            var endOfToday = startOfToday.AddDays(1).AddTicks(-1);
 
             var dataQuery = from session in _context.TypingSessions
-                                 where session.FinishedAt >= daysAgo && session.FinishedAt <= today && session.UserId == userId
+                                 where session.FinishedAt >= daysAgo && session.FinishedAt <= endOfToday && session.UserId == userId
                                  group session by session.FinishedAt.Date into groupByDay
                                  select new DayData
                                  (
@@ -126,7 +127,7 @@ namespace TypeFlow.Application.Services.TypingSession
 
             var data = await dataQuery.ToListAsync();
 
-            for(var day = daysAgo; day <= today; day = day.AddDays(1))
+            for(var day = daysAgo; day <= startOfToday; day = day.AddDays(1))
             {
                 if (data.FirstOrDefault(x => x.Day == day) is null)
                 {

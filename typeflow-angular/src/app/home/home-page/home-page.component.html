@@ -15,6 +15,7 @@
             {{challenge?.text}}
         </div>
         <textarea class="typing-test__input" id="userInput" [disabled]="textAreaDiabled"
+            (input)="onInput()"
             (keydown)="onKeyDown($event)"
             (mousedown)="onMouseDown($event)"
             (mouseup)="onMouseUp($event)"

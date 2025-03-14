@@ -8,8 +8,8 @@
       <strong>Characters Per Minute:</strong> {{ data.charactersPerMinute }}
     </mat-list-item>
     <mat-list-item>
-      <strong>Accuracy:</strong> {{ data.accuracy | number: '1.0-2' }}%
-      <mat-progress-bar mode="determinate" [value]="data.accuracy"></mat-progress-bar>
+      <strong>Accuracy:</strong> {{ data.accuracy | percent:'1.0-0' }}%
+      <mat-progress-bar mode="determinate" [value]="data.accuracy * 100"></mat-progress-bar>
     </mat-list-item>
     <mat-list-item>
       <strong>Time Taken:</strong> {{ data.finishedInSeconds }} seconds
