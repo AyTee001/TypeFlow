@@ -126,14 +126,14 @@ export class HomePageComponent implements OnInit {
 
     	const safeMinutes = minutes > 0 ? minutes : 1 / 60;
 
-    	const accuracy = ((characterCount - errorCount) / characterCount) * 100;
+    	const accuracy = ((characterCount - errorCount) / characterCount);
     	const wpm = Math.floor(characterCount / (5 * safeMinutes));
     	const cpm = Math.floor(characterCount / safeMinutes);
 
 		const result: TypingSessionDisplayResult = {
 			wordsPerMinute: wpm,
 			charactersPerMinute: cpm,
-			accuracy: accuracy,
+			accuracy: parseFloat(accuracy.toFixed(2)),
 			finishedInSeconds: finishedInSeconds,
 			errors: errorCount,
 			charactersCount: characterCount

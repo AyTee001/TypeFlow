@@ -15,16 +15,6 @@ export class UserSessionService {
 
 	constructor() { }
 
-	getUserData(): UserData | null {
-		const user = localStorage.getItem(this.userDataName);
-		if(!user) return null;
-		else return JSON.parse(user);
-	}
-
-	setUserData(user: UserData){
-		localStorage.setItem(this.userDataName, JSON.stringify(user));
-	}
-
 	setSession(tokens: Tokens) {
 		if(!tokens) return;
 

@@ -74,7 +74,6 @@ export class UserService {
 		.pipe(
 			tap((userData) => {
 				this._user = userData;
-				this.sessionService.setUserData(userData);
 			})
 		)
 	}

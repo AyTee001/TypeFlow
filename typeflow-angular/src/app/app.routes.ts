@@ -10,5 +10,5 @@ export const routes: Routes = [
     { path: 'registration', pathMatch: 'full', component: UserRegistrationComponent, canActivate: [anonymousOnlyGuard] },
     { path: 'home', pathMatch: 'full', component: HomePageComponent },
     { path: 'profile', pathMatch: 'full', component: UserProfileComponent, canActivate: [authenticatedOnlyGuard] },
-    { path: '', pathMatch: 'full', redirectTo: 'login' }
+    { path: '', pathMatch: 'full', redirectTo: 'home' }
 ];

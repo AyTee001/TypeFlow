@@ -28,7 +28,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 	function handleTokenExpiration(request: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> {
 		const refreshToken = sessionService.getRefreshToken();
 		if (!refreshToken) {
-			router.navigate(['/login']);
+			if(!router.url.includes('/home') && !(router.url === '/')){
+				router.navigate(['/login']);
+			}
 			return throwError(() => new Error('No refresh token available'));
 		}
 
@@ -45,7 +47,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 			catchError((error) => {
 				console.error('Error handling expired access token:', error);
 				sessionService.revokeSession();
-				router.navigate(['/login']);
+				if(!router.url.includes('home')){
+					router.navigate(['/login']);
+				}
 				return throwError(() => error);
 			})
 		);
